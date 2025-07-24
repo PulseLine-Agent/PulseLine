@@ -11,7 +11,7 @@ from Configs.config import HOST, PORT
 app = FastAPI()
 
 @app.get("/", response_class=JSONResponse)
-async def index_page():
+async def main_page():
     return {"message": "Currently undergoing development"}
 
 @app.api_route("/incoming-call", methods=["GET", "POST"])
@@ -21,6 +21,8 @@ async def handle_incoming_call(request: Request):
     response.say("Please wait while we connect your call to the A. I. voice assistant, powered by Twilio and the Open-A.I. Realtime API")
     response.pause(length=1)
     response.say("O.K. you can start talking!")
+    response.pause(length=0.5)
+    response.say("Please be aware, we can only help you with your prescription order, making a appointment, or transferring you to a medical professional. All other requests will be ignored.")
     
     host = request.url.hostname
     
