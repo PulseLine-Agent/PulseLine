@@ -31,6 +31,8 @@ callAg = Agent(
 appointmentAg = Agent(
     name="appointmentAg",
     model=Groq(id="llama-3.3-70b-versatile"),
+    reasoning=True,
+    reasoning_model=Groq(id="deepseek-r1-distill-llama-70b"),
     instructions="Review a csv file with a schedule of appointments. Search through and offer the most recent available day as well as 3 different times. Make sure you state the date and what day of the week it is. Read_csv returns df.to_dict thingy that has the first column for dates and first row for time.",
     tools=[],
     show_tool_calls=True,
