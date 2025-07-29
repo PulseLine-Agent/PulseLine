@@ -1,44 +1,51 @@
+import asyncio
+from groq import Groq
+
 from agno.agent import Agent
-from agno.models.groq import Groq
-from agno.tools import tool
-from datetime import datetime
-import pandas as pd
-from Configs.config import CALL_PROMPT
-from agno.tools.duckduckgo import DuckDuckGoTools
 
+from typing import AsyncGenerator
 
-from dotenv import load_dotenv
+from Configs.config import GROQ_API_KEY, LLM_CONFIG
+from Configs.prompts import CALL_PROMPT
 
-load_dotenv()
-
-df = pd.read_csv("Services/data/ex_schedule.csv")
 
 class LLMService:
     def __init__(self) -> None:
-        self.agent = Agent(
-            model=Groq(id='llama-3.3-70b-versatile'),
-            instructions=CALL_PROMPT,            
-            show_tool_calls=True,
+        self.client = Groq(api_key=GROQ_API_KEY)
+
+    async def generate_response_stream(
+        self, messages, model_name: str, reason: bool, tools=[]
+    ) -> AsyncGenerator[str, None]:
+        try:
+            print("Preparing LLM request")
+
+            start_message = {"role": "system", "content": CALL_PROMPT}
+
+            messages.insert(0, start_message)
+
+            print(f"Sending request to Groq API with {len(messages)} messages")
+
+            response = await asyncio.to_thread(
+                self.client.chat.completions.create,
+                model=model_name,
+                messages=messages,
+                temperature=LLM_CONFIG["temperature"],
+                max_tokens=LLM_CONFIG["max_tokens"],
+                top_p=LLM_CONFIG["top_p"],
+                stream=True,
+                stop=LLM_CONFIG["stop"],
             )
 
+            print("Got streaming response from Groq API")
 
-callAg = Agent(
-    name="CallAgent",
-    model=Groq(id="llama-3.3-70b-versatile"),
-    instructions=CALL_PROMPT
-)
+            # Stream the chunks back
+            for chunk in response:
+                content = chunk.choices[0].delta.content
+                if content:
+                    yield content
 
-appointmentAg = Agent(
-    name="appointmentAg",
-    model=Groq(id="llama-3.3-70b-versatile"),
-    reasoning=True,
-    reasoning_model=Groq(id="deepseek-r1-distill-llama-70b"),
-    instructions="Review a csv file with a schedule of appointments. Search through and offer the most recent available day as well as 3 different times. Make sure you state the date and what day of the week it is. Read_csv returns df.to_dict thingy that has the first column for dates and first row for time.",
-    tools=[],
-    show_tool_calls=True,
-    markdown=True
-)
+            print("Finished streaming response")
 
-#print(read_csv())
-
-appointmentAg.print_response("Gimme an appointment date.", stream=True)
+        except Exception as e:
+            print(f"Error in LLM service: {e}")
+            yield "I'm sorry, I encountered an error processing your request."

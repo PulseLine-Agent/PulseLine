@@ -1,1 +1,6 @@
-venv/
+.gitignore
+test.py
+__pycache__
+Chat.__pycache__
+Configs.__pycache__
+Services.__pycache__
