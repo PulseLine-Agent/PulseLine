@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${protocol}//${window.location.host}/ws/chat`;
+            const wsUrl = `${protocol}//${window.location.host}/chat`;
             
             console.log(`Connecting to WebSocket at: ${wsUrl}`);
             socket = new WebSocket(wsUrl);

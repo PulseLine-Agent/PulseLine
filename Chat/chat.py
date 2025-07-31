@@ -1,7 +1,7 @@
 class Message:
-    def __init__(self, role, message) -> None:
+    def __init__(self, role, content) -> None:
         self.role = role
-        self.message = message
+        self.content = content
         
 class ChatSession:
     def __init__(self, id) -> None:

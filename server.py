@@ -1,6 +1,11 @@
+import io
 import uuid
 import json
 import uvicorn
+import websockets
+import speech_recognition
+
+from pydub import AudioSegment
 
 from typing import Dict
 
@@ -8,13 +13,13 @@ from twilio.twiml.voice_response import VoiceResponse, Connect, Say, Stream
 
 from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from Chat.chat import ChatSession, Message
 
 from Configs.config import HOST, PORT
 from Services.LLMService import LLMService
-
-chat_sessions: Dict[str, ChatSession] = {}
 
 class ConnectionManager:
     def __init__(self):
@@ -39,14 +44,70 @@ manager = ConnectionManager()
 llm_service = LLMService()
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="Static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
+
+chat_sessions: Dict[str, ChatSession] = {}
+
 # TODO Make it so when user hangs up, AI summarizes so users dont have to redo entire conversation
 
-@app.get("/", response_class=JSONResponse)
-async def main_page():
-    return {"message": "Currently undergoing development"}
+async def LLM_response(websocket, session_id):
+    print("Starting LLM response stream")
+    full_response = ""
+    
+    async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, 'llama-3.3-70b-versatile', False):
+        print(f"Streaming chunk: {response_chunk[:20]}...")
+        await websocket.send_json({
+            "type": "stream",
+            "content": response_chunk
+        })
+        full_response += response_chunk
+    
+    chat_sessions[session_id].messages.append(Message(role="assistant", content=full_response))
+    print("LLM response complete, added to chat history")
+    
+    await websocket.send_json({
+        "type": "stream_end",
+        "session_id": session_id
+    })
+    
+    print("Sent stream_end signal")
+
+async def speech_to_text(audio_chunk, websocket, session_id):
+    try:
+        audio = AudioSegment.from_raw(
+            io.BytesIO(audio_data),
+            sample_width=2,
+            frame_rate=8000,
+            channels=1
+        )
+        
+        wav_data = io.BytesIO()
+        audio.export(wav_data, format="wav")
+        wav_data.seek(0)
+        
+        recognizer = speech_recognition.Recognizer()
+        
+        with speech_recognition.AudioFile(wav_data) as source:
+            audio_data = recognizer.record(source)
+            text = recognizer.recognize_google(audio_data)
+        
+        chat_sessions[session_id].messages.append(Message(role='user', content=text))
+        print(f"Speech to text: {text}")
+        
+        await LLM_response(websocket, session_id)
+        
+    except Exception as e:
+        print(f"Speech recognition error: {e}")
+        await websocket.s("Sorry, I couldn't understand that.")
+
+@app.get("/", response_class=HTMLResponse)
+async def get_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket):
+async def main_page(websocket: WebSocket):    
     try:
         print("New WebSocket connection attempt")
         session_id = await manager.connect(websocket)
@@ -56,7 +117,7 @@ async def websocket_endpoint(websocket: WebSocket):
         print(f"Sent session_id to client: {session_id}")
 
         welcome_message = "Hello! I'm your BlahBlahBlah Incorporate's personal assistant. How can I help you today?"
-        chat_sessions[session_id].messages.append(Message(role="assistant", message=welcome_message))
+        chat_sessions[session_id].messages.append(Message(role="assistant", content=welcome_message))
         
         await websocket.send_json({
             "type": "initial_message",
@@ -73,7 +134,7 @@ async def websocket_endpoint(websocket: WebSocket):
             message_data = json.loads(data)
             user_message = message_data.get("message", "")
             
-            chat_sessions[session_id].messages.append(Message(role="patient", message=user_message))
+            chat_sessions[session_id].messages.append(Message(role="user", content=user_message))
             
             await websocket.send_json({
                 "type": "message_received",
@@ -83,25 +144,7 @@ async def websocket_endpoint(websocket: WebSocket):
             print("Sent processing acknowledgment")
             
             try:
-                print("Starting LLM response stream")
-                full_response = ""
-                async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, 'llama-3.3-70b-versatile', False):
-                    print(f"Streaming chunk: {response_chunk[:20]}...")
-                    await websocket.send_json({
-                        "type": "stream",
-                        "content": response_chunk
-                    })
-                    full_response += response_chunk
-                
-                chat_sessions[session_id].messages.append(Message(role="Receptionist", message=full_response))
-                print("LLM response complete, added to chat history")
-                
-                await websocket.send_json({
-                    "type": "stream_end",
-                    "session_id": session_id
-                })
-                
-                print("Sent stream_end signal")
+                await LLM_response(websocket, session_id)
                 
             except Exception as e:
                 print(f"Error during LLM call: {e}")
@@ -146,7 +189,16 @@ async def handle_incoming_call(request: Request):
 
 @app.websocket("/media-stream")
 async def handle_media_stream(websocket: WebSocket):
-    pass
+    print("New WebSocket connection attempt")
+    await websocket.accept()
+    
+    audio_buffer = b""
+    
+    async for message in websocket.iter_bytes():
+        audio_buffer += message
+        
+    if audio_buffer:
+        await speech_to_text(audio_buffer, websocket, session_id)
 
 @app.get("/health")
 async def health_check():
