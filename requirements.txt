@@ -1,0 +1,9 @@
+fastapi==0.116.1
+groq==0.30.0
+gTTS==2.5.4
+pydub==0.25.1
+python-dotenv==1.1.1
+speechrecognition==3.14.3
+twilio==9.6.5
+uvicorn==0.35.0
+websockets==15.0.1

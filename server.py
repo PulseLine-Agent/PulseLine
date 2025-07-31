@@ -9,6 +9,8 @@ from pydub import AudioSegment
 
 from typing import Dict
 
+from gtts import gTTS
+
 from twilio.twiml.voice_response import VoiceResponse, Connect, Say, Stream
 
 from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
@@ -56,7 +58,7 @@ async def LLM_response(websocket, session_id):
     print("Starting LLM response stream")
     full_response = ""
     
-    async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, 'llama-3.3-70b-versatile', False):
+    async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, 'llama-3.3-70b-versatile', True):
         print(f"Streaming chunk: {response_chunk[:20]}...")
         await websocket.send_json({
             "type": "stream",
@@ -95,19 +97,48 @@ async def speech_to_text(audio_chunk, websocket, session_id):
         
         chat_sessions[session_id].messages.append(Message(role='user', content=text))
         print(f"Speech to text: {text}")
-        
-        await LLM_response(websocket, session_id)
-        
     except Exception as e:
         print(f"Speech recognition error: {e}")
-        await websocket.s("Sorry, I couldn't understand that.")
+
+async def text_to_speech(websocket, text):
+    try:
+        tts = gTTS(text=text, lang='en')
+        
+        audio_bytes = io.BytesIO()
+        tts.write_to_fp(audio_bytes)
+        audio_bytes.seek(0)
+        
+        audio_data = audio_bytes.read()
+        await websocket.send_bytes(audio_data)
+        
+        print(f"Sent {len(audio_data)} bytes of audio")
+    
+    except Exception as e:
+        print(f"TTS error: {e}")
+
+async def recieve_client_text(websocket, session_id):
+    print("Waiting for client message")
+    data = await websocket.receive_text()
+    print(f"Received message from client: {data[:50]}...")
+    
+    message_data = json.loads(data)
+    user_message = message_data.get("message", "")
+    
+    chat_sessions[session_id].messages.append(Message(role="user", content=user_message))
+    
+    await websocket.send_json({
+        "type": "message_received",
+        "status": "processing"
+    })
+    
+    print("Sent processing acknowledgment")
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.websocket("/chat")
-async def main_page(websocket: WebSocket):    
+async def main_page(websocket: WebSocket):
     try:
         print("New WebSocket connection attempt")
         session_id = await manager.connect(websocket)
@@ -127,21 +158,7 @@ async def main_page(websocket: WebSocket):
         print("Sent welcome message to client")
 
         while True:
-            print("Waiting for client message")
-            data = await websocket.receive_text()
-            print(f"Received message from client: {data[:50]}...")
-            
-            message_data = json.loads(data)
-            user_message = message_data.get("message", "")
-            
-            chat_sessions[session_id].messages.append(Message(role="user", content=user_message))
-            
-            await websocket.send_json({
-                "type": "message_received",
-                "status": "processing"
-            })
-            
-            print("Sent processing acknowledgment")
+            await recieve_client_text(websocket, session_id)
             
             try:
                 await LLM_response(websocket, session_id)
@@ -189,16 +206,37 @@ async def handle_incoming_call(request: Request):
 
 @app.websocket("/media-stream")
 async def handle_media_stream(websocket: WebSocket):
-    print("New WebSocket connection attempt")
-    await websocket.accept()
-    
-    audio_buffer = b""
-    
-    async for message in websocket.iter_bytes():
-        audio_buffer += message
+    try:
+        print("New WebSocket connection attempt")
+        session_id = await manager.connect(websocket)
+        print(f"Connected with session_id: {session_id}")
         
-    if audio_buffer:
-        await speech_to_text(audio_buffer, websocket, session_id)
+        audio_buffer = b""
+        
+        async for message in websocket.iter_bytes():
+            audio_buffer += message
+            
+        if audio_buffer:
+            print(f"Processing {len(audio_buffer)} bytes of audio")
+            response = await speech_to_text(audio_buffer, websocket, session_id)
+            
+            print("Starting LLM response stream")
+            full_response = ""
+            
+            async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, 'llama-3.3-70b-versatile', True):
+                print(f"Streaming chunk: {response_chunk[:20]}...")
+                await websocket.send_json({
+                    "type": "stream",
+                    "content": response_chunk
+                })
+                full_response += response_chunk
+                
+            print(f"Response: {full_response}")
+            
+            await text_to_speech(websocket, full_response)
+            
+    except WebSocketDisconnect:
+        print("Twilio disconnected")
 
 @app.get("/health")
 async def health_check():
