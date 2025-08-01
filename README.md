@@ -94,7 +94,11 @@ This project aims to develop an Agentic AI voice assistant for medical offices t
 ### Built With
 
 [![FastAPI][FastAPI.svg]][FastAPI-url]
-[![Jinja2][Jinja2.svg][Jinja2-url]]
+[![Uvicorn][Uvicorn.svg]][Uvicorn-url]
+[![Jinja2][Jinja2.svg]][Jinja2-url]
+[![Twilio][Twilio.svg]][Twilio-url]
+[![GroqCloud][GroqCloud.svg]][GroqCloud-url]
+[![Websocket][Websocket.svg]][Websocket-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -105,14 +109,14 @@ This project aims to develop an Agentic AI voice assistant for medical offices t
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
   ```sh
-  npm install npm@latest -g
+  pip install -r requirements.txt
   ```
 
 ### Installation
@@ -248,5 +252,14 @@ Project Link: [https://github.com/PulseLine-Agent/PulseLine](https://github.com/
 [Jinja2.svg]: https://img.shields.io/badge/jinja-white.svg?style=for-the-badge&logo=jinja&logoColor=black
 [Jinja2-url]: https://jinja.palletsprojects.com/en/stable
 
-[Twilio.svg]: https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=Twilio logoColor=white
+[Twilio.svg]: https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=Twilio&logoColor=white
 [Twilio-url]: https://www.twilio.com/en-us
+
+[Uvicorn.svg]: https://img.shields.io/badge/Uvicorn-7A00B2?style=for-the-badge&logo=gunicorn&logoColor=FFB7C3&labelColor=0A0068
+[Uvicorn-url]: https://www.uvicorn.org
+
+[GroqCloud.svg]: https://img.shields.io/badge/GroqCloud-white?style=for-the-badge&logo=groupon&logoColor=white&labelColor=orange
+[GroqCloud-url]: https://console.groq.com/home
+
+[Websocket.svg]: https://img.shields.io/badge/Websockets-gold?style=for-the-badge&logo=elegoo&logoColor=Blue&labelColor=blue
+[Websocket-url]: https://websockets.readthedocs.io/en/stable
