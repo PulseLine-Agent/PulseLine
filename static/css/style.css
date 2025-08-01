@@ -6,7 +6,7 @@
 }
 
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('/static/61802.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('/static/img/background.jpg');
     height: 100vh;
     display: flex;
     justify-content: center;
