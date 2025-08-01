@@ -30,7 +30,7 @@ class LLMService:
         return converted
 
     async def generate_response_stream(
-        self, messages, model_name: str, reason: bool, tools=[]
+        self, messages, reason: bool, tools=[]
     ) -> AsyncGenerator[str, None]:
         try:
             print("Preparing LLM request")
@@ -46,17 +46,29 @@ class LLMService:
 
             print(f"Sending request to Groq API with {len(messages)} messages")
 
-            response = await asyncio.to_thread(
-                self.client.chat.completions.create,
-                model=model_name,
-                messages=converted,
-                temperature=LLM_CONFIG["temperature"],
-                max_tokens=LLM_CONFIG["max_tokens"],
-                top_p=LLM_CONFIG["top_p"],
-                stream=True,
-                stop=LLM_CONFIG["stop"],
-            )
-
+            if not reason:
+                response = await asyncio.to_thread(
+                    self.client.chat.completions.create,
+                    model='llama-3.3-70b-versatile',
+                    messages=converted,
+                    temperature=LLM_CONFIG["temperature"],
+                    max_tokens=LLM_CONFIG["max_tokens"],
+                    top_p=LLM_CONFIG["top_p"],
+                    stop=LLM_CONFIG["stop"],
+                    stream=True
+                )
+            else:
+                response = await asyncio.to_thread(
+                    self.client.chat.completions.create,
+                    model='llama-3.3-70b-versatile',
+                    messages=converted,
+                    temperature=LLM_CONFIG["temperature"],
+                    max_tokens=LLM_CONFIG["max_tokens"],
+                    top_p=LLM_CONFIG["top_p"],
+                    stop=LLM_CONFIG["stop"],
+                    stream=True
+                )
+            
             print("Got streaming response from Groq API")
 
             # Stream the chunks back

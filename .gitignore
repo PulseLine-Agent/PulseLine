@@ -1,4 +1,5 @@
 .gitignore
+.env
 __pycache__
 Chat.__pycache__
 Configs.__pycache__

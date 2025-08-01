@@ -2,7 +2,6 @@ import io
 import uuid
 import json
 import uvicorn
-import websockets
 import speech_recognition
 
 from pydub import AudioSegment
@@ -14,7 +13,7 @@ from gtts import gTTS
 from twilio.twiml.voice_response import VoiceResponse, Connect, Say, Stream
 
 from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -137,6 +136,10 @@ async def recieve_client_text(websocket, session_id):
 async def get_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/", response_class=JSONResponse)
+async def get_index():
+    return {"message": "Twilio Media Stream Server is running!"}
+
 @app.websocket("/chat")
 async def main_page(websocket: WebSocket):
     try:
@@ -147,7 +150,7 @@ async def main_page(websocket: WebSocket):
         await websocket.send_json({"type": "session_id", "session_id": session_id})
         print(f"Sent session_id to client: {session_id}")
 
-        welcome_message = "Hello! I'm your BlahBlahBlah Incorporate's personal assistant. How can I help you today?"
+        welcome_message = "Hello! I'm your PulseLine Incorporate's personal assistant. How can I help you today?"
         chat_sessions[session_id].messages.append(Message(role="assistant", content=welcome_message))
         
         await websocket.send_json({
@@ -202,7 +205,10 @@ async def handle_incoming_call(request: Request):
 
     response.append(connect)
 
-    return HTMLResponse(content=str(response), media_type="application/xml")
+    xml_string = response.to_xml()
+    print(f"XML content type: {type(xml_string)}")
+    print(f"XML content: {xml_string}")
+    return Response(content=xml_string, media_type="application/xml")
 
 @app.websocket("/media-stream")
 async def handle_media_stream(websocket: WebSocket):
