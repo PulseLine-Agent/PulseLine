@@ -113,55 +113,76 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+We recommend you create a Conda Environment but it's not required.
+  ```sh
+  conda create --name PulseLine python=3.12
+  conda activate PulseLine
+  ```
+
+You will need [ngrok](https://ngrok.com) for this project if you'd like others to access it. Download and create a account before following the instructions to create a auth token before continuing.
+
+You will also need [Twilio](https://www.twilio.com/en-us) for this project if you'd like others to call in. Follow the instructions to create a account before going to the console and under the left side bar under manage, click active numbers and register a number.
+
+This is an example of how to list things you need to use the software and how to install them. This project was created using python 3.12.0 64x bit.
   ```sh
   pip install -r requirements.txt
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get a free API Key at [GroqCloud](https://console.groq.com/keys)
 2. Clone the repo
    ```sh
    git clone https://github.com/PulseLine-Agent/PulseLine.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Create a .env file in the main folder
+4. Enter your API key in `.env`
+   ```.env
+   GROQ_API_KEY = 'ENTER YOUR API KEY';
    ```
 5. Change git remote url to avoid accidental pushes to base project
    ```sh
    git remote set-url origin PulseLine-Agent/PulseLine
-   git remote -v # confirm the changes
+   git remote -v
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To run the project, follow the following steps.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+1. Run server.py.
+  ```sh
+  python server.py
+  ```
+
+2. Open a separate terminal and make your localhost public.
+  ```sh
+  ngrok http 8000
+  ```
+
+3. With the address ngrok gives you, go to Twilio's console's [active numbers](https://console.twilio.com/us1/develop/phone-numbers/manage/incoming) and under your number, you should see a text box on the same row as "A call comes in" named URL. There, put your forwarding address (i.e. https://0bb469d47dfd.ngrok-free.app).
+
+Congratulations you now have a running project! To access the model, either call into the active number or use the forwarding address!
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [x] On-call Personal Assistant
+- [x] Online Personal Assistant
+- [x] Frontend Online
+- [x] Call-in Online
+- [ ] Medical Professional Transfer
+- [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Spanish
 
 See the [open issues](https://github.com/PulseLine-Agent/PulseLine/issues) for a full list of proposed features (and known issues).
 
@@ -183,6 +204,8 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+We'll do our best to return feedback and incorporate your changes into our project!
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Top contributors:
@@ -196,7 +219,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE.md` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -205,9 +228,7 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@MITESatMIT](https://x.com/MITESatMIT) - jessewang2158@gmail.com
-
-Project Link: [https://github.com/PulseLine-Agent/PulseLine](https://github.com/PulseLine-Agent/PulseLine)
+Jesse Wang - [LinkedIn](https://www.linkedin.com/in/jesse-h-wang) - jessewang2158@gmail.com - +1(860)-266-9870
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -216,9 +237,9 @@ Project Link: [https://github.com/PulseLine-Agent/PulseLine](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [gTTS](https://github.com/pndurette/gTTS), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
+
+Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -242,7 +263,7 @@ Project Link: [https://github.com/PulseLine-Agent/PulseLine](https://github.com/
 [license-url]: https://github.com/PulseLine-Agent/PulseLine/LICENSE.txt
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/jesse-h-wang
+[linkedin-url]: https://www.linkedin.com/company/mitesatmit
 
 [product-screenshot]: images/screenshot.png
 

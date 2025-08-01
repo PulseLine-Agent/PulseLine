@@ -57,7 +57,7 @@ async def LLM_response(websocket, session_id):
     print("Starting LLM response stream")
     full_response = ""
     
-    async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages):
+    async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, True):
         print(f"Streaming chunk: {response_chunk[:20]}...")
         await websocket.send_json({
             "type": "stream",
@@ -229,7 +229,7 @@ async def handle_media_stream(websocket: WebSocket):
             print("Starting LLM response stream")
             full_response = ""
             
-            async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages):
+            async for response_chunk in llm_service.generate_response_stream(chat_sessions[session_id].messages, False):
                 print(f"Streaming chunk: {response_chunk[:20]}...")
                 await websocket.send_json({
                     "type": "stream",

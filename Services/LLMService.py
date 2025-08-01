@@ -6,7 +6,7 @@ from typing import AsyncGenerator, List
 from Chat.chat import Message
 
 from Configs.config import GROQ_API_KEY, LLM_CONFIG
-from Configs.prompts import CALL_PROMPT
+from Configs.prompts import CALL_PROMPT, ONLINE_PROMPT
 
 # TODO Give tool choices to LLM
 
@@ -29,23 +29,30 @@ class LLMService:
                 })
         return converted
 
+# TODO: Add reason to the prompt + check if qwen3 works because we can't choose when model reasons or not
+
     async def generate_response_stream(
-        self, messages, tools=[]
+        self, messages, online: bool, tools=[]
     ) -> AsyncGenerator[str, None]:
         try:
             print("Preparing LLM request")
-
-            start_message = {
-                "role": "system",
-                "content": CALL_PROMPT
-            }
+            
+            if online:
+                start_message = {
+                    "role": "system",
+                    "content": ONLINE_PROMPT
+                }
+            else:
+                start_message = {
+                    "role": "system",
+                    "content": CALL_PROMPT
+                }
 
             messages.insert(0, start_message)
             
             converted = self._convert_to_dict(messages)
 
             print(f"Sending request to Groq API with {len(messages)} messages")
-
             
             response = await asyncio.to_thread(
                 self.client.chat.completions.create,
@@ -57,7 +64,7 @@ class LLMService:
                 stop=LLM_CONFIG["stop"],
                 stream=True
             )
-            
+
             print("Got streaming response from Groq API")
 
             # Stream the chunks back
