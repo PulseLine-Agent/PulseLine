@@ -150,7 +150,7 @@ async def main_page(websocket: WebSocket):
         await websocket.send_json({"type": "session_id", "session_id": session_id})
         print(f"Sent session_id to client: {session_id}")
 
-        welcome_message = "Hello! I'm your PulseLine Incorporate's personal assistant. How can I help you today?"
+        welcome_message = "Hello! I'm your PulseLine personal assistant. How can I help you today?"
         chat_sessions[session_id].messages.append(Message(role="assistant", content=welcome_message))
         
         await websocket.send_json({
