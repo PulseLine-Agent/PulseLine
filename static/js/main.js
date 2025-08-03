@@ -224,7 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sendButton.disabled = false;
         messageInput.focus();
     }
-    
+
+
     // Event listeners
     sendButton.addEventListener('click', sendMessage);
     
@@ -235,6 +236,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    //darkModeToggle.addEventListener('click', darkMode);
+
     // Initialize connection
     connectWebSocket();
 });
+
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const lightLogo = document.getElementById('light-logo');
+const darkLogo = document.getElementById('dark-logo');
+
+lightLogo.style.display = 'none';
+
+// Dark mode toggle
+function darkMode() {
+    console.log("hehe");
+    const elements = document.querySelectorAll('.darkContainer');
+    elements.forEach(el => {
+        el.classList.toggle('darkMode');
+    });
+    if (darkLogo.style.display == 'none') {
+        darkLogo.style.display = 'block';
+        lightLogo.style.display = 'none';
+        localStorage.setItem('darkMode', 'true');
+    } else if (lightLogo.style.display == 'none') {
+        darkLogo.style.display = 'none';
+        lightLogo.style.display = 'block';
+        localStorage.setItem('darkMode', 'false');
+    }
+}
+
+darkModeToggle.addEventListener('click', darkMode);

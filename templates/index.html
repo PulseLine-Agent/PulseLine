@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulseline</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/static/img/light.png">
 </head>
 <body>
-    <div class="chat-container">
-        <header>
-            <h1>PulseLine Chat</h1>
-
+    <div class="chat-container darkMode darkContainer">
+        <header class="darkMode darkContainer">
+            <h1 id="test">PulseLine Chat</h1>
             <div id="connection-status">Connecting...</div>
+            <button id="dark-mode-toggle" class="darkMode darkContainer" >Toggle Dark Mode</button>
+            <img id="light-logo" src="/static/img/light.png" alt="PulseLine Logo" width="55px" height="55px">
+            <img id="dark-logo" src="/static/img/dark.png" alt="PulseLine Logo" width="55px" height="55px">
         </header>
         
         <div id="chat-messages" class="messages-container"></div>
         
-        <div class="input-container">
-            <textarea id="message-input" placeholder="Type your message here..." rows="3"></textarea>
+        <div class="input-container darkMode darkContainer">
+            <textarea id="message-input" class="darkMode darkContainer" placeholder="Type your message here..." rows="3"></textarea>
             <button id="send-button">Send</button>
         </div>
     </div>
-    
+    <script>
+        
+    </script>
     <script src="/static/js/main.js"></script>
 </body>
 </html>
