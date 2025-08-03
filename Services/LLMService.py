@@ -30,6 +30,7 @@ class LLMService:
         return converted
 
 # TODO: Add reason to the prompt + check if qwen3 works because we can't choose when model reasons or not
+# TODO: Try adding Qwen3 reasoning as a tool call?
 
     async def generate_response_stream(
         self, messages, online: bool, tools=[]
