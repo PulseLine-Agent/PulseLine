@@ -52,6 +52,7 @@ templates = Jinja2Templates(directory="templates")
 chat_sessions: Dict[str, ChatSession] = {}
 
 # TODO Make it so when user hangs up, AI summarizes so users dont have to redo entire conversation
+# TODO Add postgres database 
 
 async def LLM_response(websocket, session_id):
     print("Starting LLM response stream")
@@ -136,10 +137,6 @@ async def recieve_client_text(websocket, session_id):
 async def get_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/", response_class=JSONResponse)
-async def get_index():
-    return {"message": "Twilio Media Stream Server is running!"}
-
 @app.websocket("/chat")
 async def main_page(websocket: WebSocket):
     try:
@@ -184,31 +181,30 @@ async def main_page(websocket: WebSocket):
         if 'session_id' in locals():
             manager.disconnect(session_id)
 
+# TODO Add transfering
+
 @app.api_route("/incoming-call", methods=["GET", "POST"])
 async def handle_incoming_call(request: Request):
     response = VoiceResponse()
 
-    response.say(
-        "Please wait while we connect your call to the A. I. voice assistant, powered by Twilio and the Open-A.I. Realtime API"
-    )
-    response.pause(length=1)
-    response.say(
-        "Please be aware, we can only help you with your prescription order, making a appointment, or transferring you to a medical professional. All other requests will be ignored."
-    )
-    response.pause(length=0.5)
-    response.say("O.K. you can start talking!")
+    # response.say(
+    #     "Please wait while we connect your call to the A. I. voice assistant, powered by Twilio and GroqCloud"
+    # )
+    # response.pause(length=1)
+    # response.say(
+    #     "Please be aware, we can only help you with your prescription order, making a appointment, or transferring you to a medical professional. All other requests will be ignored."
+    # )
+    # response.pause(length=0.5)
+    # response.say("O.K. you can start talking!")
 
     host = request.url.hostname
-
+    
     connect = Connect()
-    connect.stream(url=f"wss://{host}/media-stream")
-
+    
+    connect.stream(url=f'wss://{host}/media-stream')
     response.append(connect)
-
-    xml_string = response.to_xml()
-    print(f"XML content type: {type(xml_string)}")
-    print(f"XML content: {xml_string}")
-    return Response(content=xml_string, media_type="application/xml")
+    
+    return HTMLResponse(content=str(response), media_type="application/xml")
 
 @app.websocket("/media-stream")
 async def handle_media_stream(websocket: WebSocket):
@@ -219,8 +215,12 @@ async def handle_media_stream(websocket: WebSocket):
         
         audio_buffer = b""
         
-        async for message in websocket.iter_bytes():
-            audio_buffer += message
+        async for message in websocket.iter_text():
+            try:
+                audio_buffer += message
+            except Exception as e:
+                print(f"Error processing message: {e}")
+                continue
             
         if audio_buffer:
             print(f"Processing {len(audio_buffer)} bytes of audio")
