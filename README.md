@@ -239,6 +239,8 @@ Jesse Wang - [LinkedIn](https://www.linkedin.com/in/jesse-h-wang) - jessewang215
 
 Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [gTTS](https://github.com/pndurette/gTTS), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
 
+Additionally, thanks to Freepik for providing the background image of the website.
+
 Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
