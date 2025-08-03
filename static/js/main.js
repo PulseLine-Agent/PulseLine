@@ -235,8 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessage();
         }
     });
-    
-    //darkModeToggle.addEventListener('click', darkMode);
 
     // Initialize connection
     connectWebSocket();
@@ -250,7 +248,7 @@ lightLogo.style.display = 'none';
 
 // Dark mode toggle
 function darkMode() {
-    console.log("hehe");
+    console.log("Dark mode toggled");
     const elements = document.querySelectorAll('.darkContainer');
     elements.forEach(el => {
         el.classList.toggle('darkMode');
