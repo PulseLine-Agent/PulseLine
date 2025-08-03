@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/PulseLine-Agent/PulseLine">
-    <img src="static/images/dark.png" alt="Logo" width="80" height="80">
+    <img src="static/img/dark.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">PulseLine</h3>
