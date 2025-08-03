@@ -229,6 +229,7 @@ Distributed under the MIT License. See `LICENSE.md` for more information.
 ## Contact
 
 Jesse Wang - [LinkedIn](https://www.linkedin.com/in/jesse-h-wang) - jessewang2158@gmail.com - +1(860)-266-9870
+Mohammad Islam - [LinkedIn](https://www.linkedin.com/in/mohammad-islam-04b015326/) - mohammadzislam08@gmail.com - +1(818)-232-6936
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
