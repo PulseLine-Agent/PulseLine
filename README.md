@@ -97,7 +97,7 @@ This project aims to develop an Agentic AI voice assistant for medical offices t
 [![Twilio][Twilio.svg]][Twilio-url]
 [![GroqCloud][GroqCloud.svg]][GroqCloud-url]
 [![Websocket][Websocket.svg]][Websocket-url]
-[![PostgreSQL][PostgreSQL.svg]][PostgresSQL-url]
+[![PostgreSQL][PostgreSQL.svg]][PostgreSQL-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -136,10 +136,11 @@ You will also need [PostgreSQL](https://www.postgresql.org) for this project. Do
   14. Emergency Contact Name
   15. Emergency Contact Number
   16. Next Visit Date
+  17. Doctor
 
 Make sure to fill in all the columns. We recommend using a spreadsheet software that exports into a common file type for this.
 
-You will also need [Twilio](https://www.twilio.com/en-us) for this project if you'd like others to call in. Follow the instructions to create a account before going to the console and under the left side bar under manage, click active numbers and register a number.
+You will also need [Twilio](https://www.twilio.com/en-us) for this project if you'd like others to call in. Follow the instructions to create an account before going to the console and under the left side bar, under manage, click active numbers and register a number.
 
 This is an example of how to list things you need to use the software and how to install them. This project was created using python 3.12.0 64x bit.
   ```sh
@@ -205,7 +206,7 @@ To see evaluations, please head to 'eval.py' to see how your agent fares.
 - [x] Frontend Online
 - [x] Call-in Online
 - [x] Mock Database
-- [ ] Medical Professional Transfer
+- [x] Medical Professional Transfer
 - [ ] Multi-language Support
     - [ ] Chinese
     - [ ] Spanish
