@@ -22,7 +22,7 @@ from Configs.prompts import ONLINE_PROMPT, CALL_PROMPT, TRANSCRIPTION_PROMPT
 
 from Services.LLMService import LLMService
 
-from Services.ToolCalls import get_patient_info, set_next_visit, redirect_call
+from Services.ToolCalls import get_patient_info, set_next_visit, redirect_call, refill_prescription
 
 class ConnectionManager:
     def __init__(self):
@@ -68,16 +68,21 @@ if not OPENAI_API_KEY:
 # Asynchronously handles generating and sending an LLM text response over a WebSocket
 async def LLM_text_response(websocket, session_id):
     print("Starting LLM response stream")
+    
+    response = ''
+    
+    while True:
+        # Generate a streamed response from the LLM based on the current chat session
+        response = await llm_service.generate_response(chat_sessions, session_id)
 
-    # Generate a streamed response from the LLM based on the current chat session
-    response = await llm_service.generate_response(chat_sessions, session_id)
-
-    # If the response is empty, notify the client with a default message
-    if response.choices[0].message.content is None:
-        await websocket.send_json({"type": "stream", "content": "Done!"})
-    else:
-        # Otherwise, send the actual LLM response content
-        await websocket.send_json({"type": "stream", "content": response.choices[0].message.content})
+        # If the response is empty, notify the client with a default message
+        if response.choices[0].message.content is None or response.choices[0].message.content == "":
+            response = await llm_service.generate_response(chat_sessions, session_id)
+        else:
+            # Otherwise, send the actual LLM response content
+            break
+    
+    await websocket.send_json({"type": "stream", "content": response.choices[0].message.content})
     
     # Save the assistant's message to the session history
     chat_sessions[session_id].messages.append(
@@ -288,6 +293,12 @@ async def handle_media_stream(websocket: WebSocket):
                             elif item["name"] == "redirect_call":
                                 print("Redirecting call\n")
                                 result = await redirect_call()
+                            elif item["name"] == "refill_prescription":
+                                print("Refilling prescription")
+                                result = await refill_prescription(
+                                    args['first_name'],
+                                    args['last_name']
+                                )
                             else:
                                 result = {"error": "unknown tool"}
                                 
@@ -407,6 +418,19 @@ async def initialize_session(openai_ws):
                     "type": "function",
                     "name": "get_patient_info",
                     "description": "Get's a patient's information",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "first_name": {"type": "string"},
+                            "last_name": {"type": "string"}
+                        },
+                        "required": ["first_name", "last_name"]
+                    }
+                },
+                {
+                    "type": "function",
+                    "name": "refill_prescription",
+                    "description": "Refills patient prescription.",
                     "parameters": {
                         "type": "object",
                         "properties": {

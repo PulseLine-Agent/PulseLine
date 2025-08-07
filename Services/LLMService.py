@@ -9,7 +9,7 @@ from Chat.chat import ChatSession, Message
 
 from Configs.config import GROQ_API_KEY, LLM_CONFIG
 
-from Services.ToolCalls import get_patient_info, set_next_visit
+from Services.ToolCalls import get_patient_info, set_next_visit, refill_prescription
 
 class LLMService:
     def __init__(self, MODEL) -> None:
@@ -101,6 +101,27 @@ class LLMService:
                                 "required": ["first_name", "last_name", "next_visit"]
                             }
                         }
+                    },
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": "refill_prescription",
+                            "description": "Refills patient prescription.",
+                            "parameters": {
+                                "type": "object",
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "description": "First name of the patient"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "description": "Last name of the patient"
+                                    }
+                                },
+                                "required": ["first_name", "last_name"]
+                            }
+                        }
                     }
                 ]
             )
@@ -111,15 +132,19 @@ class LLMService:
                 
                 if tc.function.name == "get_patient_info":
                     result = await get_patient_info(args["first_name"], args["last_name"])
+                elif tc.function.name == "refill_prescription":
+                    result = await refill_prescription(args["first_name"], args["last_name"])
                 else:
                     result = await set_next_visit(args["first_name"], args["last_name"], args['next_visit'])
                 
-                chat_sessions[session_id].messages.append(Message(role='assistant', content=result))
+                chat_sessions[session_id].messages.append(Message(role='system', content=f"This is the result of your tool call: {result}"))
+                
+                converted_followup = self._convert_to_dict(chat_sessions[session_id].messages)
                 
                 followup = await asyncio.to_thread(
                     self.client.chat.completions.create,
-                model=self.MODEL,
-                    messages=converted,
+                    model=self.MODEL,
+                    messages=converted_followup,
                     temperature=LLM_CONFIG["temperature"],
                     max_tokens=LLM_CONFIG["max_tokens"],
                     top_p=LLM_CONFIG["top_p"],
