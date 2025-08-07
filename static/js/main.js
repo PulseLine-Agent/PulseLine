@@ -245,6 +245,7 @@ const lightLogo = document.getElementById('light-logo');
 const darkLogo = document.getElementById('dark-logo');
 
 lightLogo.style.display = 'none';
+darkMode();
 
 // Dark mode toggle
 function darkMode() {
@@ -256,11 +257,14 @@ function darkMode() {
     if (darkLogo.style.display == 'none') {
         darkLogo.style.display = 'block';
         lightLogo.style.display = 'none';
-        localStorage.setItem('darkMode', 'true');
-    } else if (lightLogo.style.display == 'none') {
+        darkModeToggle.textContent = 'Togle Light Mode';
+        document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('/static/img/background.jpg')";
+    } 
+    else if (lightLogo.style.display == 'none') {
         darkLogo.style.display = 'none';
         lightLogo.style.display = 'block';
-        localStorage.setItem('darkMode', 'false');
+        darkModeToggle.textContent = 'Togle Dark Mode';
+        document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url('/static/img/background.jpg')";
     }
 }
 
