@@ -1,3 +1,9 @@
+/*
+This CSS styles a chat application UI with support for both light and dark modes. 
+It sets base styles, layouts, colors, and animations for the chat container, messages, header, input area, buttons, and typing indicator. 
+It also includes responsive sizing and interactive states like hover and focus. 
+*/
+
 * {
     margin: 0;
     padding: 0;

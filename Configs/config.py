@@ -17,3 +17,8 @@ LLM_CONFIG = {
 
 HOST = "0.0.0.0"
 PORT = 5050
+
+USER = os.getenv("USER")
+PASSWORD = os.getenv("PASSWORD")
+DATABASE = os.getenv("DATABASE")
+HOST = os.getenv("HOST")

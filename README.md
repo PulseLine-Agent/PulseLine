@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/PulseLine-Agent/PulseLine">
-    <img src="static/img/dark.png" alt="Logo" width="80" height="80">
+    <img src=".github\Images\PulseLine.png" alt="Logo" width="320" height="320">
   </a>
 
 <h3 align="center">PulseLine</h3>
@@ -83,8 +83,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 This project aims to develop an Agentic AI voice assistant for medical offices that automates routine patient requests during phone calls. Using real-time voice transcription and intelligent decision-making, the system can autonomously handle common tasks like scheduling appointments, refilling prescriptions, finding available doctors, or redirecting calls—helping reduce the administrative burden on healthcare professionals. Designed during the last week of the STEM Immersion phase of the Massachusett Institute of Technology (MIT) Introduction to Technology, Engineering, and Science (MITES) for the Quest for Autonomy class.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -99,6 +97,7 @@ This project aims to develop an Agentic AI voice assistant for medical offices t
 [![Twilio][Twilio.svg]][Twilio-url]
 [![GroqCloud][GroqCloud.svg]][GroqCloud-url]
 [![Websocket][Websocket.svg]][Websocket-url]
+[![PostgreSQL][PostgreSQL.svg]][PostgresSQL-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -108,7 +107,6 @@ This project aims to develop an Agentic AI voice assistant for medical offices t
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
@@ -120,6 +118,26 @@ We recommend you create a Conda Environment but it's not required.
   ```
 
 You will need [ngrok](https://ngrok.com) for this project if you'd like others to access it. Download and create a account before following the instructions to create a auth token before continuing.
+
+You will also need [PostgreSQL](https://www.postgresql.org) for this project. Download it, create a database, make a table with the following headers:
+  1. Patient ID
+  2. First Name
+  3. Last Name
+  4. Date of Birth
+  5. Gender
+  6. Phone Number
+  7. Email
+  8. Address
+  9. Insurance Provider
+  10. Last Visit Date
+  11. Primary Diagnosis
+  12. Allergies
+  13. Prescription
+  14. Emergency Contact Name
+  15. Emergency Contact Number
+  16. Next Visit Date
+
+Make sure to fill in all the columns. We recommend using a spreadsheet software that exports into a common file type for this.
 
 You will also need [Twilio](https://www.twilio.com/en-us) for this project if you'd like others to call in. Follow the instructions to create a account before going to the console and under the left side bar under manage, click active numbers and register a number.
 
@@ -138,7 +156,13 @@ This is an example of how to list things you need to use the software and how to
 3. Create a .env file in the main folder
 4. Enter your API key in `.env`
    ```.env
-   GROQ_API_KEY = 'ENTER YOUR API KEY';
+   GROQ_API_KEY = ENTER_YOUR_API_KEY
+   OPENAI_API_KEY = ENTER_YOUR_API_KEY
+
+   USER = ENTER_POSTGRESQL_USER
+   PASSWORD = ENTER_POSTGRESQL_PASSWORD
+   DATABASE = ENTER_POSTGRESQL_DATABASE_NAME
+   HOST = ENTER_POSTGRESQL_HOST
    ```
 5. Change git remote url to avoid accidental pushes to base project
    ```sh
@@ -168,6 +192,7 @@ To run the project, follow the following steps.
 
 Congratulations you now have a running project! To access the model, either call into the active number or use the forwarding address!
 
+To see evaluations, please head to 'eval.py' to see how your agent fares.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -179,6 +204,7 @@ Congratulations you now have a running project! To access the model, either call
 - [x] Online Personal Assistant
 - [x] Frontend Online
 - [x] Call-in Online
+- [x] Mock Database
 - [ ] Medical Professional Transfer
 - [ ] Multi-language Support
     - [ ] Chinese
@@ -241,9 +267,11 @@ Mohammad Islam - [LinkedIn](https://www.linkedin.com/in/mohammad-islam-04b015326
 
 Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [gTTS](https://github.com/pndurette/gTTS), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
 
+Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
+
 Additionally, thanks to Freepik for providing the background image of the website.
 
-Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
+If you'd like to read our report on the application, the link can be found [here](https://docs.google.com/document/d/198WE5Y-mSl6m6rdvJKZvhquq1ucRBFqGu5H7SpqzwM4/edit?usp=sharing)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -269,8 +297,6 @@ Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-a
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/company/mitesatmit
 
-[product-screenshot]: images/screenshot.png
-
 [FastAPI.svg]: https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi
 [FastAPI-url]: https://fastapi.tiangolo.com
 
@@ -288,3 +314,6 @@ Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-a
 
 [Websocket.svg]: https://img.shields.io/badge/Websockets-gold?style=for-the-badge&logo=elegoo&logoColor=Blue&labelColor=blue
 [Websocket-url]: https://websockets.readthedocs.io/en/stable
+
+[PostgreSQL.svg]: https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL-url]: https://www.postgresql.org
