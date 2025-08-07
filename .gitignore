@@ -1,8 +1,0 @@
-.gitignore
-.env
-__pycache__
-Chat.__pycache__
-Configs.__pycache__
-Services.__pycache__
-.vscode
-.env
