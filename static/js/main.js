@@ -257,13 +257,13 @@ function darkMode() {
     if (darkLogo.style.display == 'none') {
         darkLogo.style.display = 'block';
         lightLogo.style.display = 'none';
-        darkModeToggle.textContent = 'Togle Light Mode';
+        darkModeToggle.textContent = 'Toggle Light Mode';
         document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('/static/img/background.jpg')";
     } 
     else if (lightLogo.style.display == 'none') {
         darkLogo.style.display = 'none';
         lightLogo.style.display = 'block';
-        darkModeToggle.textContent = 'Togle Dark Mode';
+        darkModeToggle.textContent = 'Toggle Dark Mode';
         document.body.style.background = "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url('/static/img/background.jpg')";
     }
 }
