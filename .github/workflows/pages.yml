@@ -70,7 +70,14 @@ jobs:
         run: |
           mkdir -p public
           cp -r static public/static
-          cp Templates/index.html public/index.html
+          if [ -f Templates/index.html ]; then
+            cp Templates/index.html public/index.html
+          elif [ -f templates/index.html ]; then
+            cp templates/index.html public/index.html
+          else
+            echo "index.html not found under Templates/ or templates/" >&2
+            exit 1
+          fi
           touch public/.nojekyll
           # Make static asset paths relative for repository Pages (avoid absolute /static path)
           sed -i 's|/static/|static/|g' public/index.html
