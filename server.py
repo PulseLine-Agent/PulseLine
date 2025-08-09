@@ -44,7 +44,7 @@ class ConnectionManager:
             del self.active_connections[session_id]
 
 manager = ConnectionManager()
-llm_service = LLMService('openai/gpt-oss-20b')
+llm_service = LLMService('llama-3.3-70b-versatile')
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
