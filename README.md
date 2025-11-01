@@ -266,11 +266,9 @@ Mohammad Islam - [LinkedIn](https://www.linkedin.com/in/mohammad-islam-04b015326
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
+Our thanks to [python-dotenv](https://github.com/theskumar/python-dotenv), Twilio's great [guide](https://github.com/twilio-samples/speech-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project. This project would not have been possible without these authors' great libraries.
 
-Also, a special thanks to Twilio's great [guide](https://github.com/twilio-samples/speech-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
-
-Additionally, thanks to Freepik for providing the background image of the website.
+Additionally, thanks to Freepik for providing the website's background image.
 
 If you'd like to read our report on the application, the link can be found [here](https://docs.google.com/document/d/198WE5Y-mSl6m6rdvJKZvhquq1ucRBFqGu5H7SpqzwM4/edit?usp=sharing)
 
