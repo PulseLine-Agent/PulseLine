@@ -83,7 +83,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project aims to develop an Agentic AI voice assistant for medical offices that automates routine patient requests both on the phone and online. Using real-time voice transcription and intelligent decision-making, the system can autonomously handle common tasks like scheduling appointments, refilling prescriptions, finding available doctors, or redirecting calls—helping reduce the administrative burden on healthcare professionals. Designed during the last week of the STEM Immersion phase of the Massachusett Institute of Technology (MIT) Introduction to Technology, Engineering, and Science (MITES) for the Quest for Autonomy class.
+This project aims to develop an Agentic AI voice assistant for medical offices that automates routine patient requests both on the phone and online. Using real-time voice transcription and intelligent decision-making, the system can autonomously handle common tasks like scheduling appointments, refilling prescriptions, finding available doctors, or redirecting calls—helping reduce the administrative burden on healthcare professionals. Designed during the last week of the STEM Immersion phase of the Massachusetts Institute of Technology (MIT) Introduction to Technology, Engineering, and Science (MITES) for the Quest for Autonomy class.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
