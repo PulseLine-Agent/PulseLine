@@ -266,7 +266,7 @@ Mohammad Islam - [LinkedIn](https://www.linkedin.com/in/mohammad-islam-04b015326
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [gTTS](https://github.com/pndurette/gTTS), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
+Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
 
 Also, a special thanks to Twilio's great [guide](https://github.com/twilio-samples/speech-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
 
