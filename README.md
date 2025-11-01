@@ -189,9 +189,9 @@ To run the project, follow the following steps.
   ngrok http 8000
   ```
 
-3. With the address ngrok gives you, go to Twilio's console's [active numbers](https://console.twilio.com/us1/develop/phone-numbers/manage/incoming) and under your number, you should see a text box on the same row as "A call comes in" named URL. There, put your forwarding address (i.e. https://0bb469d47dfd.ngrok-free.app).
+3. With the address ngrok gives you, go to Twilio's console's [active numbers](https://console.twilio.com/us1/develop/phone-numbers/manage/incoming) and under your number, you should see a text box on the same row as "A call comes in" named URL. There, put your forwarding address (i.e., https://0bb469d47dfd.ngrok-free.app).
 
-Congratulations you now have a running project! To access the model, either call into the active number or use the forwarding address!
+Congratulations, you now have a running project! To access the model, either call into the active number or use the forwarding address!
 
 To see evaluations, please head to 'eval.py' to see how your agent fares.
 
@@ -268,7 +268,7 @@ Mohammad Islam - [LinkedIn](https://www.linkedin.com/in/mohammad-islam-04b015326
 
 Our thanks to [speech_recognition](https://github.com/Uberi/speech_recognition), [gTTS](https://github.com/pndurette/gTTS), [pydub](https://github.com/jiaaro/pydub), and [python-dotenv](https://github.com/theskumar/python-dotenv). This project would not have been possible without these authors' great libraries.
 
-Also a special thanks to Twilio's great [guide](twilio.com/en-us/blog/voice-ai-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
+Also, a special thanks to Twilio's great [guide](https://github.com/twilio-samples/speech-assistant-openai-realtime-api-python) on building a voice assistant, [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), [GroqStreamChain](https://github.com/The-Data-Dilemma/GroqStreamChain/tree/main), as well as [ChatGPT](https://chatgpt.com) for helping us out when creating this project.
 
 Additionally, thanks to Freepik for providing the background image of the website.
 
